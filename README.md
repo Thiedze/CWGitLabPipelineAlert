@@ -32,3 +32,7 @@ The LED strip is controlled by Neopixel.
   "project_id": "123456" 
 }
 `
+
+## 3d model
+Found on printables: 
+https://www.printables.com/de/model/285641-led-tower-lamp-wled-tower-lamp
