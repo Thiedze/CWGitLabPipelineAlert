@@ -14,29 +14,21 @@ def get_status():
 
 
 def update_led_stripe():
-    fade_in_counter = 1
-    fade_in_direction = 1
-    brightness = 80
+    fade_in_counter = 0
+    led_counter = 0
+    direction = 1
     while True:
         if gitlab_service.status in [Status.CREATED, Status.RUNNING, Status.SCHEDULED]:
-            sleep_timer = 0.04
-            if fade_in_counter >= brightness or fade_in_counter <= 0:
-                fade_in_direction *= -1
-            fade_in_counter += 1 * fade_in_direction
-
-            led_stripe_service.pixels.fill([0, 0, fade_in_counter])
+            sleep_timer, fade_in_counter, direction = (
+                led_stripe_service.update_led_waiting_status(fade_in_counter, direction))
         elif gitlab_service.status == Status.SUCCESS:
-            sleep_timer = 10
-            led_stripe_service.pixels.fill([0, brightness, 0])
+            sleep_timer = led_stripe_service.update_led_success_status()
         elif gitlab_service.status == Status.FAILED:
-            sleep_timer = 0.5
-            if led_stripe_service.pixels[0] == [brightness, 0, 0]:
-                led_stripe_service.pixels.fill([0, 0, 0])
-            else:
-                led_stripe_service.pixels.fill([brightness, 0, 0])
+            sleep_timer = led_stripe_service.update_led_failed_status()
+        elif gitlab_service.status == Status.UNKNOWN:
+            sleep_timer, led_counter, direction = led_stripe_service.update_led_unknown_status(led_counter, direction)
         else:
-            sleep_timer = 10
-            led_stripe_service.pixels.fill([brightness, brightness, 0])
+            sleep_timer = led_stripe_service.update_led_all_other_status()
         time.sleep(sleep_timer)
 
 

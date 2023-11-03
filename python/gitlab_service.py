@@ -8,7 +8,7 @@ class GitLabService:
     def __init__(self, base_url, access_token, project_id):  # access_token = access_token
         self.base_url = 'https://' + base_url + '/api/v4'
         self.headers = {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
-        self.status = Status.CREATED
+        self.status = Status.UNKNOWN
         self.project_id = project_id
 
     def get_pipelines(self, project_id):
@@ -36,7 +36,7 @@ class GitLabService:
             if len(pipelines) > 0:
                 pipeline = pipelines[0]
                 self.status = Status[pipeline['status'].upper()]
-                print("set_pipeline_status: " + str(self.status.value))
+                # print("set_pipeline_status: " + str(self.status.value))
         except Exception as exception:
             print("set_pipeline_status error: " + str(exception))
 

@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class Status(Enum):
+    UNKNOWN = 0
     CREATED = 1
     WAITING_FOR_RESOURCE = 2
     PREPARING = 3
