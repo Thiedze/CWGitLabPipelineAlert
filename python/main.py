@@ -10,7 +10,7 @@ from status import Status
 def get_status():
     while True:
         gitlab_service.set_pipeline_status()
-        time.sleep(10)
+        time.sleep(30)
 
 
 def update_led_stripe():
@@ -41,7 +41,7 @@ def update_led_stripe():
 
 
 if __name__ == '__main__':
-    file = open('config.json')
+    file = open('/home/pi/CWGitLabPipelineAlert/python/config.json')
     config = json.load(file)
 
     gitlab_service = GitLabService(config['base_url'], config['access_token'], config['project_id'])
