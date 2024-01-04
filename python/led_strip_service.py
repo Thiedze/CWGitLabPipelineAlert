@@ -6,7 +6,7 @@ class LedStripeService:
 
     def __init__(self):
         self.led_counter = 30
-        self.brightness = 80
+        self.brightness = 20
         self.pixels = neopixel.NeoPixel(board.D18, self.led_counter)
 
     def update_led_failed_status(self):
@@ -25,6 +25,7 @@ class LedStripeService:
 
         if fade_in_counter <= 0 or fade_in_counter >= self.brightness:
             direction *= -1
+            fade_in_counter += 1 * direction
 
         self.pixels.fill([0, 0, fade_in_counter])
         return 0.04, fade_in_counter, direction
@@ -44,4 +45,8 @@ class LedStripeService:
 
     def update_led_all_other_status(self):
         self.pixels.fill([0, self.brightness, self.brightness])
+        return 10
+    
+    def night_mode(self):
+        self.pixels.fill([0, 0, 0])
         return 10

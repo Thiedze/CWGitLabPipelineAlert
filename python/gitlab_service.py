@@ -14,19 +14,15 @@ class GitLabService:
     def get_pipelines(self, project_id):
         pipelines = []
 
-        for index in range(1, 2):
-            response = requests.get(
-                self.base_url + '/projects/' + str(project_id) + '/pipelines' + '?per_page=10&page=' + str(index),
-                headers=self.headers)
-            if 200 <= response.status_code < 300:
-                if len(response.json()) > 0:
-                    for responsePipeline in response.json():
-                        if not any(pipeline['id'] == str(responsePipeline['id']) for pipeline in pipelines):
-                            pipelines.append(responsePipeline)
-                else:
-                    break
-            else:
-                print(str(response.status_code))
+        response = requests.get(
+            self.base_url + '/projects/' + str(project_id) + '/pipelines' + '?per_page=10&page=1', headers=self.headers)
+        if 200 <= response.status_code < 300:
+            if len(response.json()) > 0:
+                for responsePipeline in response.json():
+                    if not any(pipeline['id'] == str(responsePipeline['id']) for pipeline in pipelines):
+                        pipelines.append(responsePipeline)
+        else:
+            print(str(response.status_code))
         return pipelines
 
     def set_pipeline_status(self):
